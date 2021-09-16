@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<AnchorPane prefHeight="620.0" prefWidth="777.0" xmlns="http://javafx.com/javafx/11.0.2" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controllers.Prueba">
+    <Button fx:id="buttonIntroduce" layoutX="294.0" layoutY="79.0" mnemonicParsing="false" onAction="#introduceText" text="Introducir" />
+    <ListView fx:id="listLeft" layoutX="84.0" layoutY="167.0" prefHeight="365.0" prefWidth="200.0" />
+    <ListView fx:id="listRight" layoutX="490.0" layoutY="167.0" prefHeight="365.0" prefWidth="200.0" />
+    <TextField fx:id="textInput" layoutX="84.0" layoutY="79.0" onAction="#introduceText"/>
+    <Button fx:id="botonRight" layoutX="362.0" layoutY="350.0" mnemonicParsing="false" onAction="#moveElement" text="&lt;--&gt;" />
+    <Button fx:id="buttonErase" layoutX="438.0" layoutY="79.0" mnemonicParsing="false" onAction="#eraseContent" text="Eliminar" />
+</AnchorPane>
