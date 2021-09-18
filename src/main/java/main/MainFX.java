@@ -15,7 +15,7 @@ public class MainFX extends Application {
 
     @Override
     public void start(Stage stage) throws Exception {
-        FXMLLoader loaderMenu = new FXMLLoader(getClass().getResource("/fxml/Prueba.fxml"));
+        FXMLLoader loaderMenu = new FXMLLoader(getClass().getResource("/fxml/PrimeraInterfaz.fxml"));
         AnchorPane root = loaderMenu.load();
         Scene scene = new Scene(root);
         stage.setTitle("Mi primera ventana de prueba");
