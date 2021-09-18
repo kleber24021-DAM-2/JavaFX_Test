@@ -19,7 +19,7 @@ public class Person {
 
     @Override
     public String toString() {
-        if (isMale){
+        if (isMale) {
             return name + " " + age + " Hombre " + registryDate.toString();
         }
         return name + " " + age + " Mujer " + registryDate.toString();

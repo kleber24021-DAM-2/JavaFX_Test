@@ -5,12 +5,18 @@ import Models.Person;
 
 public class ServiceMovePerson {
 
-    public boolean moveToSelected(Person p, DAOPersona dao){
+    DAOPersona dao;
+
+    public ServiceMovePerson(DAOPersona dao) {
+        this.dao = dao;
+    }
+
+    public boolean moveToSelected(Person p) {
         dao.getGeneralList().remove(p);
         return dao.getSelectedList().add(p);
     }
 
-    public boolean moveToGeneral(Person p, DAOPersona dao){
+    public boolean moveToGeneral(Person p) {
         dao.getSelectedList().remove(p);
         return dao.getGeneralList().add(p);
     }

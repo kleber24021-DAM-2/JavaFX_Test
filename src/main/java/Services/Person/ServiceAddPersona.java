@@ -4,7 +4,13 @@ import DAO.DAOPersona;
 import Models.Person;
 
 public class ServiceAddPersona {
-    public boolean addPerson(Person p, DAOPersona dao){
+    DAOPersona dao;
+
+    public ServiceAddPersona(DAOPersona dao) {
+        this.dao = dao;
+    }
+
+    public boolean addPerson(Person p) {
         return dao.addGeneralList(p);
     }
 }

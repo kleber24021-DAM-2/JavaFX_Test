@@ -12,13 +12,14 @@ public class DAOPersona {
     private List<Person> generalList;
     private List<Person> selectedList;
 
-    public DAOPersona(){
-        if (generalList == null){
+    public DAOPersona() {
+        if (generalList == null) {
             generalList = new ArrayList<>();
             selectedList = new ArrayList<>();
         }
     }
-    public boolean addGeneralList(Person p){
+
+    public boolean addGeneralList(Person p) {
         return generalList.add(p);
     }
 
