@@ -11,7 +11,7 @@ public class ServiceAddPersona {
     }
 
     public boolean addPerson(Person p) {
-        if (p.getRegistryDate() == null){
+        if (p.getRegistryDate() == null || p.getName().isEmpty() || p.getName().isBlank()){
             return false;
         }
         return dao.addGeneralList(p);
