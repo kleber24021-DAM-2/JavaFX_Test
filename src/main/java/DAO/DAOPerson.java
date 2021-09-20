@@ -7,12 +7,12 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Getter
-public class DAOPersona {
+public class DAOPerson {
 
     private List<Person> generalList;
     private List<Person> selectedList;
 
-    public DAOPersona() {
+    public DAOPerson() {
         if (generalList == null) {
             generalList = new ArrayList<>();
             selectedList = new ArrayList<>();

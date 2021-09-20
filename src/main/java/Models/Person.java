@@ -19,6 +19,9 @@ public class Person {
 
     @Override
     public String toString() {
+        if(name.isBlank() || name.isEmpty()){
+            name = "N/A";
+        }
         if (isMale) {
             return name + " " + age + " Hombre " + registryDate.toString();
         }

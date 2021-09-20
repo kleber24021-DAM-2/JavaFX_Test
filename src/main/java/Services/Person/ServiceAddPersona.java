@@ -1,16 +1,19 @@
 package Services.Person;
 
-import DAO.DAOPersona;
+import DAO.DAOPerson;
 import Models.Person;
 
 public class ServiceAddPersona {
-    DAOPersona dao;
+    DAOPerson dao;
 
-    public ServiceAddPersona(DAOPersona dao) {
+    public ServiceAddPersona(DAOPerson dao) {
         this.dao = dao;
     }
 
     public boolean addPerson(Person p) {
+        if (p.getRegistryDate() == null){
+            return false;
+        }
         return dao.addGeneralList(p);
     }
 }

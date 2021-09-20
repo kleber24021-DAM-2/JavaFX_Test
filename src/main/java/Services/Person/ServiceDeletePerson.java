@@ -1,12 +1,12 @@
 package Services.Person;
 
-import DAO.DAOPersona;
+import DAO.DAOPerson;
 import Models.Person;
 
 public class ServiceDeletePerson {
 
-    DAOPersona dao;
-    public ServiceDeletePerson(DAOPersona dao){
+    DAOPerson dao;
+    public ServiceDeletePerson(DAOPerson dao){
         this.dao = dao;
     }
 

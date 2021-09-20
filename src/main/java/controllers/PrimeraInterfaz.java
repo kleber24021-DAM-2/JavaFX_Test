@@ -1,6 +1,6 @@
 package controllers;
 
-import DAO.DAOPersona;
+import DAO.DAOPerson;
 import Models.Person;
 import Services.Person.ServiceAddPersona;
 import Services.Person.ServiceDeletePerson;
@@ -25,7 +25,7 @@ public class PrimeraInterfaz implements Initializable {
     //Creamos un DAO para el controlador. De esta forma podemos utilizar siempre la misma instancia del DAO.
     //Además instanciamos los diferentes servicios que vamos a utilizar
 
-    private DAOPersona daoPersona;
+    private DAOPerson daoPerson;
     private ServiceAddPersona serviceAddPersona;
     private ServiceMovePerson serviceMovePerson;
     private ServiceDeletePerson serviceDeletePerson;
@@ -62,11 +62,11 @@ public class PrimeraInterfaz implements Initializable {
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
         alert = new Alert(Alert.AlertType.ERROR);
-        daoPersona = new DAOPersona();
-        serviceAddPersona = new ServiceAddPersona(daoPersona);
-        serviceMovePerson = new ServiceMovePerson(daoPersona);
-        serviceDeletePerson = new ServiceDeletePerson(daoPersona);
-        serviceModifyPerson = new ServiceModifyPerson(daoPersona);
+        daoPerson = new DAOPerson();
+        serviceAddPersona = new ServiceAddPersona(daoPerson);
+        serviceMovePerson = new ServiceMovePerson(daoPerson);
+        serviceDeletePerson = new ServiceDeletePerson(daoPerson);
+        serviceModifyPerson = new ServiceModifyPerson(daoPerson);
 
         comboBox.getItems().add("Hombre");
         comboBox.getItems().add("Mujer");
@@ -75,6 +75,7 @@ public class PrimeraInterfaz implements Initializable {
 
     @FXML
     private void addPersona(ActionEvent actionEvent) {
+        //Crea una nueva persona y trata de cambiar los atributos del
         Person p = new Person();
         try {
             p.setName(textName.getText());
@@ -86,9 +87,13 @@ public class PrimeraInterfaz implements Initializable {
                 alert.setAlertType(Alert.AlertType.CONFIRMATION);
                 alert.setContentText("Persona añadida");
                 refreshLists();
+                textEdad.setText("");
+                textName.setText("");
+                datePicker.getEditor().clear();
+                sexo.selectToggle(null);
             } else {
                 alert.setAlertType(Alert.AlertType.ERROR);
-                alert.setContentText("No se ha podido añadir a la persona");
+                alert.setContentText("No se ha podido añadir a la persona. Revise los datos");
             }
             alert.showAndWait();
         } catch (Exception e) {
@@ -102,10 +107,10 @@ public class PrimeraInterfaz implements Initializable {
         generalList.getItems().clear();
         selectedList.getItems().clear();
 
-        for (Person p : daoPersona.getGeneralList()) {
+        for (Person p : daoPerson.getGeneralList()) {
             generalList.getItems().add(p);
         }
-        for (Person p : daoPersona.getSelectedList()) {
+        for (Person p : daoPerson.getSelectedList()) {
             selectedList.getItems().add(p);
         }
     }
@@ -187,7 +192,7 @@ public class PrimeraInterfaz implements Initializable {
     @FXML
     private void filterContents(ActionEvent actionEvent) {
         String selected = comboBox.getSelectionModel().getSelectedItem();
-        List<Person> generalList = daoPersona.getGeneralList();
+        List<Person> generalList = daoPerson.getGeneralList();
         this.generalList.getItems().clear();
         this.generalList.getItems().addAll(generalList.stream().filter(
                 person -> {
@@ -202,14 +207,19 @@ public class PrimeraInterfaz implements Initializable {
     @FXML
     private void showPersonInfo(MouseEvent mouseEvent) {
         Person selected = selectedList.getSelectionModel().getSelectedItem();
-
-        textName.setText(selected.getName());
-        textEdad.setText(Integer.toString(selected.getAge()));
-        datePicker.setValue(selected.getRegistryDate());
-        if (selected.isMale()) {
-            rbHombre.setSelected(true);
-        } else {
-            rbMujer.setSelected(true);
+        try{
+            textName.setText(selected.getName());
+            textEdad.setText(Integer.toString(selected.getAge()));
+            datePicker.setValue(selected.getRegistryDate());
+            if (selected.isMale()) {
+                rbHombre.setSelected(true);
+            } else {
+                rbMujer.setSelected(true);
+            }
+        }catch (Exception e){
+           alert.setAlertType(Alert.AlertType.INFORMATION);
+           alert.setContentText("No existe ningún elemento en la lista derecha");
+           alert.showAndWait();
         }
     }
 }
