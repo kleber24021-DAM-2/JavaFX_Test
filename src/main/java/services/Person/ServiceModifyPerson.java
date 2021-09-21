@@ -1,13 +1,13 @@
-package Services.Person;
+package services.Person;
 
-import DAO.DAOPerson;
-import Models.Person;
+import dao.DAOPerson;
+import models.Person;
 
 public class ServiceModifyPerson {
     DAOPerson dao;
 
-    public ServiceModifyPerson(DAOPerson dao) {
-        this.dao = dao;
+    public ServiceModifyPerson() {
+        dao = new DAOPerson();
     }
 
     public void modifyPerson(Person target, Person newPerson) {

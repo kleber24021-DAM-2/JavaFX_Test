@@ -1,4 +1,4 @@
-package Models;
+package models;
 
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -19,7 +19,7 @@ public class Person {
 
     @Override
     public String toString() {
-        if(name.isBlank() || name.isEmpty()){
+        if (name.isBlank() || name.isEmpty()) {
             name = "N/A";
         }
         if (isMale) {

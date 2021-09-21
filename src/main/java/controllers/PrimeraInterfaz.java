@@ -1,16 +1,14 @@
 package controllers;
 
-import DAO.DAOPerson;
-import Models.Person;
-import Services.Person.ServiceAddPersona;
-import Services.Person.ServiceDeletePerson;
-import Services.Person.ServiceModifyPerson;
-import Services.Person.ServiceMovePerson;
-import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.*;
-import javafx.scene.input.MouseEvent;
+import models.Person;
+import services.Person.ServiceAddPersona;
+import services.Person.ServiceDeletePerson;
+import services.Person.ServiceModifyPerson;
+import services.Person.ServiceMovePerson;
+import services.ServiceGetDaoLists;
 
 import java.net.URL;
 import java.util.List;
@@ -19,18 +17,16 @@ import java.util.stream.Collectors;
 
 public class PrimeraInterfaz implements Initializable {
 
+    private final ServiceAddPersona serviceAddPersona = new ServiceAddPersona();
+    private final ServiceMovePerson serviceMovePerson = new ServiceMovePerson();
+    //Creamos un DAO para el controlador. De esta forma podemos utilizar siempre la misma instancia del DAO.
+    //Además instanciamos los diferentes servicios que vamos a utilizar
+    private final ServiceDeletePerson serviceDeletePerson = new ServiceDeletePerson();
+    private final ServiceModifyPerson serviceModifyPerson = new ServiceModifyPerson();
+    private final ServiceGetDaoLists serviceGetDaoLists = new ServiceGetDaoLists();
     @FXML
     private RadioButton rbMujer;
     private Alert alert;
-    //Creamos un DAO para el controlador. De esta forma podemos utilizar siempre la misma instancia del DAO.
-    //Además instanciamos los diferentes servicios que vamos a utilizar
-
-    private DAOPerson daoPerson;
-    private ServiceAddPersona serviceAddPersona;
-    private ServiceMovePerson serviceMovePerson;
-    private ServiceDeletePerson serviceDeletePerson;
-    private ServiceModifyPerson serviceModifyPerson;
-
     @FXML
     private RadioButton rbHombre;
     @FXML
@@ -62,19 +58,13 @@ public class PrimeraInterfaz implements Initializable {
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
         alert = new Alert(Alert.AlertType.ERROR);
-        daoPerson = new DAOPerson();
-        serviceAddPersona = new ServiceAddPersona(daoPerson);
-        serviceMovePerson = new ServiceMovePerson(daoPerson);
-        serviceDeletePerson = new ServiceDeletePerson(daoPerson);
-        serviceModifyPerson = new ServiceModifyPerson(daoPerson);
-
         comboBox.getItems().add("Hombre");
         comboBox.getItems().add("Mujer");
     }
 
 
     @FXML
-    private void addPersona(ActionEvent actionEvent) {
+    private void addPersona() {
         //Crea una nueva persona y trata de cambiar los atributos del
         Person p = new Person();
         try {
@@ -107,16 +97,16 @@ public class PrimeraInterfaz implements Initializable {
         generalList.getItems().clear();
         selectedList.getItems().clear();
 
-        for (Person p : daoPerson.getGeneralList()) {
+        for (Person p : serviceGetDaoLists.getGeneralList()) {
             generalList.getItems().add(p);
         }
-        for (Person p : daoPerson.getSelectedList()) {
+        for (Person p : serviceGetDaoLists.getSelectedList()) {
             selectedList.getItems().add(p);
         }
     }
 
     @FXML
-    private void updatePerson(ActionEvent actionEvent) {
+    private void updatePerson() {
         Person p = new Person();
         Person targetPerson = selectedList.getSelectionModel().getSelectedItem();
 
@@ -146,7 +136,7 @@ public class PrimeraInterfaz implements Initializable {
     }
 
     @FXML
-    private void moveRight(ActionEvent actionEvent) {
+    private void moveRight() {
         if (generalList.getSelectionModel().getSelectedItem() != null) {
             serviceMovePerson.moveToSelected(generalList.getSelectionModel().getSelectedItem());
             refreshLists();
@@ -158,7 +148,7 @@ public class PrimeraInterfaz implements Initializable {
     }
 
     @FXML
-    private void moveLeft(ActionEvent actionEvent) {
+    private void moveLeft() {
         if (selectedList.getSelectionModel().getSelectedItem() != null) {
             serviceMovePerson.moveToGeneral(selectedList.getSelectionModel().getSelectedItem());
             refreshLists();
@@ -170,7 +160,7 @@ public class PrimeraInterfaz implements Initializable {
     }
 
     @FXML
-    private void deletePersona(ActionEvent actionEvent) {
+    private void deletePersona() {
         Person toDelete = selectedList.getSelectionModel().getSelectedItem();
         if (toDelete != null) {
             if (serviceDeletePerson.deletePerson(toDelete)) {
@@ -190,9 +180,9 @@ public class PrimeraInterfaz implements Initializable {
 
 
     @FXML
-    private void filterContents(ActionEvent actionEvent) {
+    private void filterContents() {
         String selected = comboBox.getSelectionModel().getSelectedItem();
-        List<Person> generalList = daoPerson.getGeneralList();
+        List<Person> generalList = serviceGetDaoLists.getGeneralList();
         this.generalList.getItems().clear();
         this.generalList.getItems().addAll(generalList.stream().filter(
                 person -> {
@@ -205,9 +195,9 @@ public class PrimeraInterfaz implements Initializable {
     }
 
     @FXML
-    private void showPersonInfo(MouseEvent mouseEvent) {
+    private void showPersonInfo() {
         Person selected = selectedList.getSelectionModel().getSelectedItem();
-        try{
+        try {
             textName.setText(selected.getName());
             textEdad.setText(Integer.toString(selected.getAge()));
             datePicker.setValue(selected.getRegistryDate());
@@ -216,10 +206,10 @@ public class PrimeraInterfaz implements Initializable {
             } else {
                 rbMujer.setSelected(true);
             }
-        }catch (Exception e){
-           alert.setAlertType(Alert.AlertType.INFORMATION);
-           alert.setContentText("No existe ningún elemento en la lista derecha");
-           alert.showAndWait();
+        } catch (Exception e) {
+            alert.setAlertType(Alert.AlertType.INFORMATION);
+            alert.setContentText("Seleccione un elemento de la lista derecha");
+            alert.showAndWait();
         }
     }
 }
